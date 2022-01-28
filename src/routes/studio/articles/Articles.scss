@@ -1,0 +1,23 @@
+.article-list {
+	margin: 127px 0 0 20px;
+}
+
+.article {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+
+	border: 2px solid black;
+	margin-top: -2px;
+	padding: 10px;
+
+	a {
+		color: black;
+		font-weight: 600;
+		font-size: 16px;
+	}
+
+	h3 {
+		margin-top: 8px;
+	}
+}

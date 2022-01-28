@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom";
-import "./Header.css";
+import "./Header.scss";
+import Logo from "../logo/Logo";
 
 function Header() {
 	return (
 		<header className="header">
-			<Link to="/">Home</Link>
+			<Logo />
 		</header>
 	);
 }
