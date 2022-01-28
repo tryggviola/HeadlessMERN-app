@@ -1,0 +1,18 @@
+.layout {
+	display: flex;
+	flex-direction: row;
+}
+
+.sidebar {
+	padding: 20px;
+	color: white;
+	background-color: black;
+	height: 100vh;
+}
+
+.sidebar__links {
+	display: flex;
+	flex-direction: column;
+
+	padding-top: 20px;
+}
