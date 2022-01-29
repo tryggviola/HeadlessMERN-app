@@ -15,7 +15,7 @@ export default function Layout({ children }) {
 					<Link to="/studio/projects">Projects</Link>
 				</div>
 			</div>
-			<div>{children}</div>
+			<div className="content">{children}</div>
 		</div>
 	);
 }

@@ -60,8 +60,8 @@ export default function Article() {
 					value={article.subtitle || ""}
 					onChange={(e) => updateArticle("subtitle", e.target.value)}
 				/>
+				<div>{article.created}</div>
 			</div>
-			<div>{article.created}</div>
 			<textarea
 				className="edittext"
 				value={article.content}
