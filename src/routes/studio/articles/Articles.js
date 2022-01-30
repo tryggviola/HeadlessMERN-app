@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Switch from "react-switch";
 
+import Switch from "../components/switch/Switch";
 import "./Articles.scss";
 
 export default function Articles() {
 	const [articles, setArticles] = useState([]);
 	useEffect(() => {
-		const getArticles = async () => {
-			const response = await fetch(
-				`${process.env.REACT_APP_API_SERVER}/articles`
-			);
-			const data = await response.json();
-
-			setArticles(data);
-		};
-
 		getArticles();
 	}, []);
+
+	const getArticles = async () => {
+		const response = await fetch(
+			`${process.env.REACT_APP_API_SERVER}/articles`
+		);
+		const { data } = await response.json();
+
+		setArticles(data);
+	};
 
 	const updateArticle = async (published, article) => {
 		const updatedArticle = {
@@ -31,7 +31,7 @@ export default function Articles() {
 		setArticles(updatedArticles);
 
 		await fetch(`${process.env.REACT_APP_API_SERVER}/articles/${article._id}`, {
-			method: "PUT",
+			method: "PATCH",
 			headers: {
 				"Content-type": "application/json; charset=UTF-8", // Indicates the content
 			},
@@ -39,20 +39,43 @@ export default function Articles() {
 		});
 	};
 
+	const deleteArticle = async (article) => {
+		await fetch(`${process.env.REACT_APP_API_SERVER}/articles/${article._id}`, {
+			method: "DELETE",
+		});
+
+		getArticles();
+	};
+
 	return (
 		<div className="article-list">
+			<div className="title">
+				<h1>Your Articles</h1>
+				<Link to="/studio/articles/new-article">
+					<button className="new-article">New</button>
+				</Link>
+			</div>
 			{articles?.map((article) => (
 				<div className="article" key={article._id}>
 					<div>
-						<Link to={`/studio/articles/${article?._id}`}>
-							{article?.title}
-						</Link>
+						<h2>{article?.title}</h2>
 						<h3>{article?.subtitle}</h3>
 					</div>
-					<Switch
-						onChange={(value) => updateArticle(value, article)}
-						checked={!!article.published}
-					/>
+					<div className="actions">
+						<Link to={`/studio/articles/${article?._id}`}>
+							<button className="edit-button">Edit</button>
+						</Link>
+						<button
+							className="delete-button"
+							onClick={() => deleteArticle(article)}
+						>
+							Delete
+						</button>
+						<Switch
+							onChange={(value) => updateArticle(value, article)}
+							checked={!!article.published}
+						/>
+					</div>
 				</div>
 			))}
 		</div>

@@ -8,6 +8,7 @@ import reportWebVitals from "./reportWebVitals";
 import Home from "./routes/home/Home";
 import Login from "./routes/login/Login";
 import Studio from "./routes/studio/Studio";
+import Article from "./routes/article/Article";
 
 const rootElement = document.getElementById("root");
 
@@ -17,6 +18,7 @@ ReactDOM.render(
 			<Route path="/" element={<Home />} />
 			<Route path="login" element={<Login />} />
 			<Route path="studio/*" element={<Studio />} />
+			<Route path="article/:id" element={<Article />} />
 		</Routes>
 	</BrowserRouter>,
 	rootElement

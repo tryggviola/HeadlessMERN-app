@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import Switch from "react-switch";
+import { useNavigate, useParams } from "react-router-dom";
 
-import "./Article.scss";
+import ArticleForm from "../components/article-form/ArticleForm";
 
 export default function Article() {
 	const params = useParams();
+	const navigate = useNavigate();
 
-	const [article, setArticle] = useState([]);
+	const [article, setArticle] = useState({});
 	useEffect(() => {
 		const getArticle = async () => {
 			const response = await fetch(
 				`${process.env.REACT_APP_API_SERVER}/articles/${params.id}`
 			);
-			const data = await response.json();
+			const { data } = await response.json();
 
 			setArticle(data);
 		};
@@ -27,12 +27,20 @@ export default function Article() {
 
 	const saveArticle = async () => {
 		await fetch(`${process.env.REACT_APP_API_SERVER}/articles/${params.id}`, {
-			method: "PUT",
+			method: "PATCH",
 			headers: {
 				"Content-type": "application/json; charset=UTF-8", // Indicates the content
 			},
 			body: JSON.stringify(article),
 		});
+	};
+
+	const deleteArticle = async () => {
+		await fetch(`${process.env.REACT_APP_API_SERVER}/articles/${params.id}`, {
+			method: "DELETE",
+		});
+
+		navigate("/studio/articles");
 	};
 
 	const updateArticle = (key, value) => {
@@ -43,31 +51,11 @@ export default function Article() {
 	};
 
 	return (
-		<div className="article-box">
-			<Link to="/studio/articles">Back</Link>
-			<div className="title">
-				<input
-					value={article.title || ""}
-					onChange={(e) => updateArticle("title", e.target.value)}
-				/>
-				<Switch
-					onChange={(e) => updateArticle("published", e)}
-					checked={!!article.published}
-				/>
-			</div>
-			<div className="subtitle">
-				<input
-					value={article.subtitle || ""}
-					onChange={(e) => updateArticle("subtitle", e.target.value)}
-				/>
-				<div>{article.created}</div>
-			</div>
-			<textarea
-				className="edittext"
-				value={article.content}
-				onChange={(e) => updateArticle("content", e.target.value)}
-			/>
-			<button onClick={saveArticle}>Save</button>
-		</div>
+		<ArticleForm
+			saveArticle={saveArticle}
+			deleteArticle={deleteArticle}
+			updateArticle={updateArticle}
+			article={article}
+		/>
 	);
 }
